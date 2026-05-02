@@ -1,6 +1,8 @@
+package com.meupet.app;
+
 import java.util.Scanner;
 import java.util.List;
-import main.java.com.meupet.model.Usuario;
+import com.meupet.model.Usuario;
 import java.util.ArrayList;
 import com.google.gson.Gson;
 import java.io.FileWriter;

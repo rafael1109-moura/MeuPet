@@ -1,17 +1,20 @@
+package com.meupet.app;
+
+import com.meupet.app.Menu;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import main.java.com.meupet.model.Animal;
-import main.java.com.meupet.model.AutenticacaoException;
-import main.java.com.meupet.model.Cachorro;
-import main.java.com.meupet.model.Cachorro.RacaCachorro;
-import main.java.com.meupet.model.DadoInvalidoException;
-import main.java.com.meupet.model.Gato;
-import main.java.com.meupet.model.Gato.RacaGato;
-import main.java.com.meupet.model.PetSaude;
-import main.java.com.meupet.model.Usuario;
+import com.meupet.model.Animal;
+import com.meupet.model.AutenticacaoException;
+import com.meupet.model.Cachorro;
+import com.meupet.model.Cachorro.RacaCachorro;
+import com.meupet.model.DadoInvalidoException;
+import com.meupet.model.Gato;
+import com.meupet.model.Gato.RacaGato;
+import com.meupet.model.PetSaude;
+import com.meupet.model.Usuario;
 // novas bibliotecas para JSON
-import main.java.com.meupet.model.Vacina;
+import com.meupet.model.Vacina;
 import com.google.gson.Gson;
 import java.io.FileWriter;
 //leitura e escrita do JSON

@@ -1,4 +1,4 @@
-package main.java.com.meupet.model;
+package com.meupet.model;
 
 import java.util.List;
 import java.util.Map;
