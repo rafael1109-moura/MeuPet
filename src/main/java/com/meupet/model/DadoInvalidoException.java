@@ -1,4 +1,4 @@
-package main.java.com.meupet.model;
+package com.meupet.model;
 
 public class DadoInvalidoException extends Exception {
     public DadoInvalidoException(String mensagem) {

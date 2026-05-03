@@ -1,9 +1,5 @@
 package com.meupet.app;
 
-import com.meupet.app.Menu;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import com.meupet.model.Animal;
 import com.meupet.model.AutenticacaoException;
 import com.meupet.model.Cachorro;
@@ -13,16 +9,9 @@ import com.meupet.model.Gato;
 import com.meupet.model.Gato.RacaGato;
 import com.meupet.model.PetSaude;
 import com.meupet.model.Usuario;
-// novas bibliotecas para JSON
 import com.meupet.model.Vacina;
-import com.google.gson.Gson;
-import java.io.FileWriter;
-//leitura e escrita do JSON
-import java.io.FileReader;
-import java.io.FileWriter;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.io.File;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class Main {
@@ -33,7 +22,7 @@ public class Main {
 
         //==================================================================================
         // Menu para gerenciamento de usuários
-        Menu menu = new Menu(); // cria o menu
+        Menu menu = new Menu(scanner); // cria o menu
         menu.iniciar();         // executa o menu
         
 

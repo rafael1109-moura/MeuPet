@@ -1,4 +1,4 @@
-package main.java.com.meupet.model;
+package com.meupet.model;
 
 public class AutenticacaoException extends Exception {
     public AutenticacaoException(String mensagem) {
