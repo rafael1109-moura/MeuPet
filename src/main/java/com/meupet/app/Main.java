@@ -16,6 +16,20 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
+        // =====================================================================
+        // Lendo a anotação teste da classe Menu usando reflection
+        Class<?> classeMenu = Menu.class;
+        if (classeMenu.isAnnotationPresent(Versao.class)) {
+            Versao anotação = classeMenu.getAnnotation(Versao.class);
+            System.out.println("--- INFORMAÇÕES DO SISTEMA (VIA REFLECTION) ---");
+            System.out.println("Módulo de Menu Inicializado.");
+            System.out.println("Versão de testes: " + anotação.numero());
+            System.out.println("Autor: " + anotação.autor());
+            System.out.println("-----------------------------------------------\n");
+        }
+        // =====================================================================
+        
         Scanner scanner = new Scanner(System.in);
 
         PetSaude saude = new PetSaude();
