@@ -19,7 +19,6 @@ public class Menu {
         List<Usuario> usuarios = new ArrayList<>();
 
         while (true) {
-            System.out.println("Bem-vindo ao MeuPet!");
             System.out.println("1- Listar usuarios");
             System.out.println("2- Adicionar usuario");
             System.out.println("3- Salvar usuarios");

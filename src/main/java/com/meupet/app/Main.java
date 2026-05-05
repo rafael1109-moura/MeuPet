@@ -23,6 +23,7 @@ public class Main {
         if (classeMenu.isAnnotationPresent(Versao.class)) {
             Versao anotação = classeMenu.getAnnotation(Versao.class);
             System.out.println("--- INFORMAÇÕES DO SISTEMA (VIA REFLECTION) ---");
+            System.out.println("Bem-vindo ao MeuPet!");
             System.out.println("Módulo de Menu Inicializado.");
             System.out.println("Versão de testes: " + anotação.numero());
             System.out.println("Autor: " + anotação.autor());
