@@ -1,9 +1,6 @@
 package com.meupet.app;
 
 import com.meupet.model.*;
-import com.meupet.model.Cachorro.RacaCachorro;
-import com.meupet.model.Gato.RacaGato;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,11 +24,11 @@ public class Main {
 
 
         //pega nome do cachorro
-        System.out.print("Digite o nome do cachorro: ");
+        System.out.print("Digite o nome do seu cachorro: ");
         String nomeCachorro = scanner.nextLine();
         
         //nome do gato
-        System.out.print("Digite o nome do gato: ");
+        System.out.print("Digite o nome do seu gato: ");
         String nomeGato = scanner.nextLine();
         
         PetSaude saude = new PetSaude();
@@ -92,7 +89,7 @@ public class Main {
     }
 
     private static void desenharLinha() {
-        System.out.println("================================================ ========");
+        System.out.println("============================================== == ========");
     }
 
     private static void exibirBannerSistema() {
