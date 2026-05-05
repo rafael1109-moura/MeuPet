@@ -5,7 +5,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+//uso teste do annotations
+@Versao(numero = "1.0", autor = "Lucas Lopes")
+    
 public class Menu {
     private Scanner scanner;
 
