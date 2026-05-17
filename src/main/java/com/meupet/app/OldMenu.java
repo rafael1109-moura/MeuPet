@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 //uso teste do annotations
-@Versao(numero = "1.0", autor = "Lucas Lopes")
+@UnusedVersao(numero = "1.0", autor = "Lucas Lopes")
     
-public class Menu {
+public class OldMenu {
     private Scanner scanner;
 
-    public Menu(Scanner scanner) {
+    public OldMenu(Scanner scanner) {
         this.scanner = scanner;
     }
 
