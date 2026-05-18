@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 //indicação para classes
 @Target(ElementType.TYPE) 
-public @interface Versao {
+public @interface UnusedVersao {
     String numero() default "1.0";
     String autor() default "Equipe MeuPet";
 }

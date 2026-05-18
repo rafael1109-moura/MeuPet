@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Main {
+public class OldMain {
     public static void main(String[] args) {
 
         // Lendo a anotação teste da classe Menu usando reflection
@@ -15,7 +15,7 @@ public class Main {
 
         //==================================================================================
         // Menu para gerenciamento de usuários
-        Menu menu = new Menu(scanner); // cria o menu
+        OldMenu menu = new OldMenu(scanner); // cria o menu
         menu.iniciar();         // executa o menu
         
         desenharLinha();
@@ -93,9 +93,9 @@ public class Main {
     }
 
     private static void exibirBannerSistema() {
-        Class<?> classeMenu = Menu.class;
-        if (classeMenu.isAnnotationPresent(Versao.class)) {
-            Versao anotação = classeMenu.getAnnotation(Versao.class);
+        Class<?> classeMenu = OldMenu.class;
+        if (classeMenu.isAnnotationPresent(UnusedVersao.class)) {
+            UnusedVersao anotação = classeMenu.getAnnotation(UnusedVersao.class);
             desenharLinha();
             System.out.println("  Bem-vindo ao MeuPet!");
             System.out.println("  Versão de testes: " + anotação.numero());
