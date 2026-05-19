@@ -61,7 +61,7 @@ public class OldMenu {
         System.out.println("Digite a senha do usuario:");
         String senha = scanner.nextLine();
 
-        int id = usuarios.size() + 1;
+        long id = usuarios.size() + 1;
         Usuario novoUsuario = new Usuario(id, nome, email, senha);
         usuarios.add(novoUsuario);
         System.out.println("Usuario adicionado com sucesso!");
