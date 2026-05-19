@@ -2,7 +2,7 @@
 
 Um sistema de monitoramento e gerenciamento de pets, feito para facilitar o cuidado animal tanto no setor doméstico quanto no comercial.
 
-> **Status do Projeto:** Em desenvolvimento inicial (Fase de Modelagem de Classes)
+> **Status do Projeto:** em fase de prototipagem e desenvolvimento da API (com spring).
 
 ## 📖 Sobre o Projeto
 O **MeuPet** é uma aplicação focada em centralizar e organizar as informações vitais dos nossos queridos pets. 
@@ -18,6 +18,7 @@ Equipe:
 * Edvaldo Henrique - [perfil GitHub](https://github.com/edvaldinhs)
 * Lucas Lopes - [perfil GitHub](https://github.com/lucas1noid)
 * Rafael de Moura - [perfil GitHub](https://github.com/rafael1109-moura)
+* Thales Justino - [perfil GitHub](https://github.com/D410W)
 
 Professor orientador:
 * Alan de Oliveira Santana
