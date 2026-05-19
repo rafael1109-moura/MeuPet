@@ -1,27 +1,28 @@
 package com.meupet.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "tb_usuario")
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario implements Autenticavel {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false, unique = true)
     private String email;
+    
+    @Column(nullable = false)
     private String senha;
-
-    public Usuario(int id, String nome, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getSenha() { return senha; }
-    public void setSenha(String senha) { this.senha = senha; }
-
+    
     @Override
     public void login(String email, String senha) throws AutenticacaoException {
         if (this.email.equals(email) && this.senha.equals(senha)) {
@@ -30,13 +31,12 @@ public class Usuario implements Autenticavel {
             throw new AutenticacaoException("Falha no login: Email ou senha incorretos para o usuário " + this.email);
         }
     }
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "ID:" + id +
-                ", Nome:'" + nome + '\'' +
-                ", Email:'" + email + '\'' +
-                '}';
-    }
-    
+    // @Override
+    // public String toString() {
+    //     return "Usuario{" +
+    //             "ID:" + id +
+    //             ", Nome:'" + nome + '\'' +
+    //             ", Email:'" + email + '\'' +
+    //             '}';
+    // }
 }

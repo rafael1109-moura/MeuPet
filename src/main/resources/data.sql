@@ -56,10 +56,6 @@ CREATE TABLE IF NOT EXISTS tb_animal_doenca (
     FOREIGN KEY (doenca_id) REFERENCES tb_doenca(id) ON DELETE CASCADE
 );
 
-INSERT INTO tb_usuario (nome, email, senha) VALUES 
-('teste', 'teste@meupet.com', 'senha123'),
-('alou', 'alou@meupet.com', 'admin321');
-
 INSERT INTO tb_doenca (nome, descricao, tratamento) VALUES 
 ('Raiva', 'Zoonose viral fatal', 'Prevenção vacinal'),
 ('Cinomose', 'Vírus altamente contagioso', 'Suporte intensivo'),
