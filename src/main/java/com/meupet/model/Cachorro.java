@@ -1,36 +1,56 @@
 package com.meupet.model;
 
+//resposavel por salvar no banco
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+//classe vira uma tabela no banco de dados
+@Entity
+@Table(name = "tb_cachorro") //nome da tabela
+@Getter
+@Setter
+@NoArgsConstructor // cria um construtor sem argumentos
+@AllArgsConstructor // cria um construtor com todos os argumentos
+
 public class Cachorro extends Animal {
-    private String data_last_banho;
-    private String data_last_tosa;
-    private String data_ultimo_passeio;
+    private LocalDate dataLastBanho;
+    private LocalDate dataLastTosa;
+    private LocalDate dataUltimoPasseio;
+
+    @Enumerated(EnumType.STRING) //salva o nome da raça no banco de dados
     private RacaCachorro raca;
-
     public enum RacaCachorro {
-    Bulldog, Golden_Retriever, Pastor_Alemão, Pinscher, Pug, Salsicha, Shih_Tzu, SRD;
-}
-
-    public void setRaca(RacaCachorro raca) {this.raca = raca;}
-    public RacaCachorro getRaca() { return raca; }
-
-    public Cachorro(int id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
-                    String data_last_banho, String data_last_tosa, String data_ultimo_passeio, RacaCachorro raca) {
-        super(id, nome, idade, sexo, peso, sujo, castrado);
-        this.data_last_banho = data_last_banho;
-        this.data_last_tosa = data_last_tosa;
-        this.data_ultimo_passeio = data_ultimo_passeio;
-        this.raca = raca;
+        Bulldog,
+        GoldenRetriever,
+        PastorAlemao, 
+        Pinscher,
+        Pug,
+        Salsicha,
+        ShihTzu,
+        SRD
     }
+
+    //logica do sistema
+
+
 
     @Override
     public List<Vacina> buscarVacinas(Map<String, List<Vacina>> vacinasPorPet) {
         return vacinasPorPet.get("Cachorro");
     }
 
+    //aqui  deveria ser doença, mas vou manter por enquanto
     @Override
     public List<Vacina> buscarDoencas(Map<String, List<Vacina>> vacinasPorPet) {
         return vacinasPorPet.get("Cachorro");
@@ -39,7 +59,7 @@ public class Cachorro extends Animal {
     @Override
     public String exibirAnimal() {
         return "Nome do seu cachorrinho é: " + nome + "\nDe idade: " + idade + "\n" +
-           "Raça: " + raca.toString();
+           "Raça: " + raca;
     }
 
     @Override
@@ -52,23 +72,5 @@ public class Cachorro extends Animal {
             default -> "Ensinar um comando novo";
         };
     }
-
-	public String getData_last_banho() { return data_last_banho; }
-
-	public void setData_last_banho(String data_last_banho) {
-		this.data_last_banho = data_last_banho;
-	}
-
-	public String getData_last_tosa() { return data_last_tosa; }
-
-	public void setData_last_tosa(String data_last_tosa) {
-		this.data_last_tosa = data_last_tosa;
-	}
-
-	public String getData_ultimo_passeio() { return data_ultimo_passeio; }
-
-	public void setData_ultimo_passeio(String data_ultimo_passeio) {
-		this.data_ultimo_passeio = data_ultimo_passeio;
-	}
     
 }

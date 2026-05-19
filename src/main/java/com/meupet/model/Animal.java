@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
+
 public abstract class Animal {
     protected int id;
     protected String nome;
@@ -19,7 +21,7 @@ public abstract class Animal {
     public enum Sexo {
         MACHO, FEMEA;
     }
-
+    public Animal() {}
     public Animal(int id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado) {
         this.id = id;
         this.nome = nome;
