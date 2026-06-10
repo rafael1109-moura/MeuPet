@@ -15,11 +15,18 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 // Entidade base para todos os animais do sistema.
 @Entity
 @Table(name = "tb_animal")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Animal {
 
     // Chave primaria gerada pelo banco.
@@ -48,10 +55,6 @@ public abstract class Animal {
     // Opcoes de sexo aceitas pelo sistema.
     public enum Sexo {
         MACHO, FEMEA
-    }
-
-    // Construtor usado pelo JPA.
-    protected Animal() {
     }
 
     // Construtor com os dados comuns de qualquer animal.

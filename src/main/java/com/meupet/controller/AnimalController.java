@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 
 // Controller REST para o endpoint generico de animais.
 @RestController
-@RequestMapping("/animais")
+@RequestMapping("/api/animais")
 @Tag(name = "Animais", description = "Endpoints para gerenciamento de animais")
 public class AnimalController {
 
