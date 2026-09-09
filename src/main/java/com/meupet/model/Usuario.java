@@ -2,6 +2,7 @@ package com.meupet.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -25,18 +26,11 @@ public class Usuario implements Autenticavel {
     
     @Override
     public void login(String email, String senha) throws AutenticacaoException {
-        if (this.email.equals(email) && this.senha.equals(senha)) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (this.email.equals(email) && encoder.matches(senha, this.senha)) {
             System.out.println("Login bem-sucedido! Bem-vindo, " + getNome());
         } else {
-            throw new AutenticacaoException("Falha no login: Email ou senha incorretos para o usuário " + this.email);
+            throw new AutenticacaoException("Falha no login: Email ou senha incorretos para o usuario " + this.email);
         }
     }
-    // @Override
-    // public String toString() {
-    //     return "Usuario{" +
-    //             "ID:" + id +
-    //             ", Nome:'" + nome + '\'' +
-    //             ", Email:'" + email + '\'' +
-    //             '}';
-    // }
 }

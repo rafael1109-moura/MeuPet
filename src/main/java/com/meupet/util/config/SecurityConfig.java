@@ -14,16 +14,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) 
-            
-            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
+            .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").permitAll() 
-                .requestMatchers("/h2-console/**", "/h2/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                
+                // TODO: Remover permitAll em /api/** apos implementar endpoint de login
+                .requestMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
             );
 
