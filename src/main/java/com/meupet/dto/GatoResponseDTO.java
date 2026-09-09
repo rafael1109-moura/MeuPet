@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class GatoResponseDTO {
 
-    private Integer id;
+    private Long id;
     private String nome;
     private int idade;
     private RacaGato raca;

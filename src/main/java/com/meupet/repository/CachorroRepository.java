@@ -12,7 +12,7 @@ import com.meupet.model.Cachorro.RacaCachorro;
 
 
 @Repository
-public interface CachorroRepository extends JpaRepository<Cachorro, Integer> {
+public interface CachorroRepository extends JpaRepository<Cachorro, Long> {
    
     Optional<Cachorro> findByNomeIgnoreCase(String nome);
     

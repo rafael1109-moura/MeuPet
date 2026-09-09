@@ -14,7 +14,7 @@ import lombok.Data;
 public class AnimalResponseDTO {
 
     // Dados comuns de Animal.
-    private Integer id;
+    private Long id;
     private TipoAnimal tipo;
     private String nome;
     private int idade;

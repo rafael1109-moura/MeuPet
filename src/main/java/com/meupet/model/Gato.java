@@ -37,7 +37,7 @@ public class Gato extends Animal {
     }
 
     // Construtor com dados comuns e dados especificos de gato.
-    public Gato(Integer id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
+    public Gato(Long id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
                 boolean areiaSuja, RacaGato raca) {
         super(id, nome, idade, sexo, peso, sujo, castrado);
         this.areiaSuja = areiaSuja;

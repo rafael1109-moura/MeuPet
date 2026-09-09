@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class CachorroResponseDTO {
 
-    private Integer id; // ID do banco
+    private Long id; // ID do banco
 
     private String nome;
     private int idade;
