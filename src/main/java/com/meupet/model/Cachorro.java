@@ -49,7 +49,7 @@ public class Cachorro extends Animal {
     }
 
     // Construtor usado quando as datas ja chegam como LocalDate.
-    public Cachorro(Integer id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
+    public Cachorro(Long id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
                     LocalDate dataLastBanho, LocalDate dataLastTosa, LocalDate dataUltimoPasseio,
                     RacaCachorro raca) {
         super(id, nome, idade, sexo, peso, sujo, castrado);
@@ -60,7 +60,7 @@ public class Cachorro extends Animal {
     }
 
     // Construtor auxiliar para criar cachorro recebendo datas em formato de texto.
-    public Cachorro(Integer id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
+    public Cachorro(Long id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado,
                     String dataLastBanho, String dataLastTosa, String dataUltimoPasseio,
                     RacaCachorro raca) {
         this(id, nome, idade, sexo, peso, sujo, castrado,

@@ -11,7 +11,7 @@ import com.meupet.model.Gato.RacaGato;
 
 // Repository para consultas de gatos.
 @Repository
-public interface GatoRepository extends JpaRepository<Gato, Integer> {
+public interface GatoRepository extends JpaRepository<Gato, Long> {
 
     Optional<Gato> findByNomeIgnoreCase(String nome);
 

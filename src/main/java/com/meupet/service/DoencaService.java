@@ -1,21 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.meupet.service;
 
-/**
- *
- * @author edvaldinhs
- */
 import com.meupet.dto.DoencaRequestDTO;
 import com.meupet.dto.DoencaResponseDTO;
 import com.meupet.model.DadoInvalidoException;
 import com.meupet.model.Doenca;
 import com.meupet.repository.DoencaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class DoencaService {
@@ -27,20 +22,45 @@ public class DoencaService {
     }
 
     public DoencaResponseDTO criar(DoencaRequestDTO request) throws DadoInvalidoException {
-        if (repository.findByNomeIgnoreCase(request.getNome()).isPresent()) {
-            throw new DadoInvalidoException("A doença '" + request.getNome() + "' já está cadastrada.");
-        }
+        validarNomeDisponivel(request.getNome(), null);
 
         Doenca doenca = new Doenca(null, request.getNome(), request.getDescricao(), request.getTratamento());
-        Doenca salva = repository.save(doenca);
-        
-        return converterParaDTO(salva);
+        return converterParaDTO(repository.save(doenca));
     }
 
-    public List<DoencaResponseDTO> listarTodas() {
-        return repository.findAll().stream()
-                .map(this::converterParaDTO)
-                .collect(Collectors.toList());
+    public Page<DoencaResponseDTO> listarTodas(Pageable pageable) {
+        return repository.findAll(pageable).map(this::converterParaDTO);
+    }
+
+    public DoencaResponseDTO buscarPorId(Long id) {
+        return converterParaDTO(buscarDoenca(id));
+    }
+
+    public DoencaResponseDTO atualizar(Long id, DoencaRequestDTO request) throws DadoInvalidoException {
+        Doenca doenca = buscarDoenca(id);
+        validarNomeDisponivel(request.getNome(), id);
+
+        doenca.setNome(request.getNome());
+        doenca.setDescricao(request.getDescricao());
+        doenca.setTratamento(request.getTratamento());
+
+        return converterParaDTO(repository.save(doenca));
+    }
+
+    public void deletar(Long id) {
+        repository.delete(buscarDoenca(id));
+    }
+
+    private Doenca buscarDoenca(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Doença com id " + id + " não encontrada."));
+    }
+
+    private void validarNomeDisponivel(String nome, Long idIgnorado) throws DadoInvalidoException {
+        Optional<Doenca> existente = repository.findByNomeIgnoreCase(nome);
+        if (existente.isPresent() && !existente.get().getId().equals(idIgnorado)) {
+            throw new DadoInvalidoException("A doença '" + nome + "' já está cadastrada.");
+        }
     }
 
     private DoencaResponseDTO converterParaDTO(Doenca doenca) {

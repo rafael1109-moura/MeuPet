@@ -32,7 +32,7 @@ public abstract class Animal {
     // Chave primaria gerada pelo banco.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+    protected Long id;
 
     // Dados comuns herdados por Cachorro e Gato.
     @Column(nullable = false)
@@ -58,7 +58,7 @@ public abstract class Animal {
     }
 
     // Construtor com os dados comuns de qualquer animal.
-    protected Animal(Integer id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado) {
+    protected Animal(Long id, String nome, int idade, Sexo sexo, float peso, boolean sujo, boolean castrado) {
         this.id = id;
         this.nome = validarNome(nome);
         this.idade = validarIdade(idade);
@@ -145,7 +145,7 @@ public abstract class Animal {
         return "Nome do seu pet: " + nome + "\nDe idade: " + idade;
     }
 
-    protected void setId(Integer id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 
@@ -173,7 +173,7 @@ public abstract class Animal {
         this.castrado = castrado;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

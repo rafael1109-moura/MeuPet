@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.meupet.controller;
 
-/**
- *
- * @author D410W
- */
 import com.meupet.dto.UsuarioRequestDTO;
 import com.meupet.dto.UsuarioResponseDTO;
 import com.meupet.model.DadoInvalidoException;
@@ -15,11 +7,12 @@ import com.meupet.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -34,15 +27,35 @@ public class UsuarioController {
 
     @PostMapping
     @Operation(summary = "Cadastrar um novo usuário")
-    public ResponseEntity<UsuarioResponseDTO> cadastrar(@Valid @RequestBody UsuarioRequestDTO request) throws DadoInvalidoException {
-        UsuarioResponseDTO novoUsuario = service.criar(request);
-        return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
+    public ResponseEntity<UsuarioResponseDTO> cadastrar(@Valid @RequestBody UsuarioRequestDTO request)
+            throws DadoInvalidoException {
+        return new ResponseEntity<>(service.criar(request), HttpStatus.CREATED);
     }
 
     @GetMapping
     @Operation(summary = "Listar todos os usuários cadastrados")
-    public ResponseEntity<List<UsuarioResponseDTO>> listar() {
-        List<UsuarioResponseDTO> lista = service.listarTodas();
-        return ResponseEntity.ok(lista);
+    public ResponseEntity<Page<UsuarioResponseDTO>> listar(
+            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(service.listarTodas(pageable));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar usuário por id")
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar um usuário")
+    public ResponseEntity<UsuarioResponseDTO> atualizar(@PathVariable Long id,
+            @Valid @RequestBody UsuarioRequestDTO request) throws DadoInvalidoException {
+        return ResponseEntity.ok(service.atualizar(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Excluir um usuário")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,9 @@
 package com.meupet.service;
 
+import java.util.NoSuchElementException;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.meupet.dto.AnimalRequestDTO;
@@ -10,7 +14,6 @@ import com.meupet.model.Cachorro;
 import com.meupet.model.Gato;
 import com.meupet.repository.AnimalRepository;
 
-// Service com as regras de negocio de Animal.
 @Service
 public class AnimalService {
 
@@ -20,14 +23,56 @@ public class AnimalService {
         this.repository = repository;
     }
 
-    // Cria um animal concreto a partir do DTO.
     public AnimalResponseDTO criar(AnimalRequestDTO request) {
         Animal animal = toEntity(request);
         Animal salvo = repository.save(animal);
         return toResponse(salvo);
     }
 
-    // Decide qual subclasse deve ser criada.
+    public Page<AnimalResponseDTO> listarTodos(Pageable pageable) {
+        return repository.findAll(pageable).map(this::toResponse);
+    }
+
+    public AnimalResponseDTO buscarPorId(Long id) {
+        return toResponse(buscarAnimal(id));
+    }
+
+    public AnimalResponseDTO atualizar(Long id, AnimalRequestDTO request) {
+        Animal animal = buscarAnimal(id);
+        preencherDadosComuns(animal, request);
+
+        if (animal instanceof Cachorro cachorro) {
+            validarTipo(request.getTipo(), TipoAnimal.CACHORRO);
+            cachorro.setRaca(request.getRacaCachorro());
+            cachorro.setDataLastBanho(request.getDataLastBanho());
+            cachorro.setDataLastTosa(request.getDataLastTosa());
+            cachorro.setDataUltimoPasseio(request.getDataUltimoPasseio());
+        }
+
+        if (animal instanceof Gato gato) {
+            validarTipo(request.getTipo(), TipoAnimal.GATO);
+            gato.setRaca(request.getRacaGato());
+            gato.setAreiaSuja(request.isAreiaSuja());
+        }
+
+        return toResponse(repository.save(animal));
+    }
+
+    public void deletar(Long id) {
+        repository.delete(buscarAnimal(id));
+    }
+
+    private Animal buscarAnimal(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Animal com id " + id + " não encontrado."));
+    }
+
+    private void validarTipo(TipoAnimal informado, TipoAnimal cadastrado) {
+        if (informado != null && informado != cadastrado) {
+            throw new IllegalArgumentException("Tipo do animal informado não corresponde ao cadastro.");
+        }
+    }
+
     private Animal toEntity(AnimalRequestDTO request) {
         if (request.getTipo() == TipoAnimal.CACHORRO) {
             return criarCachorro(request);
@@ -40,7 +85,6 @@ public class AnimalService {
         throw new IllegalArgumentException("Tipo de animal invalido.");
     }
 
-    // Monta a entidade Cachorro.
     private Cachorro criarCachorro(AnimalRequestDTO request) {
         if (request.getRacaCachorro() == null) {
             throw new IllegalArgumentException("Raca do cachorro e obrigatoria.");
@@ -55,7 +99,6 @@ public class AnimalService {
         return cachorro;
     }
 
-    // Monta a entidade Gato.
     private Gato criarGato(AnimalRequestDTO request) {
         if (request.getRacaGato() == null) {
             throw new IllegalArgumentException("Raca do gato e obrigatoria.");
@@ -68,7 +111,6 @@ public class AnimalService {
         return gato;
     }
 
-    // Preenche os campos herdados de Animal.
     private void preencherDadosComuns(Animal animal, AnimalRequestDTO request) {
         animal.setNome(request.getNome());
         animal.setIdade(request.getIdade());
@@ -78,7 +120,6 @@ public class AnimalService {
         animal.setCastrado(request.isCastrado());
     }
 
-    // Converte entidade em DTO de resposta.
     private AnimalResponseDTO toResponse(Animal animal) {
         AnimalResponseDTO response = new AnimalResponseDTO();
         response.setId(animal.getId());
@@ -101,7 +142,6 @@ public class AnimalService {
         return response;
     }
 
-    // Preenche dados especificos de cachorro no DTO.
     private void preencherDadosCachorro(AnimalResponseDTO response, Cachorro cachorro) {
         response.setTipo(TipoAnimal.CACHORRO);
         response.setRacaCachorro(cachorro.getRaca());
@@ -110,7 +150,6 @@ public class AnimalService {
         response.setDataUltimoPasseio(cachorro.getDataUltimoPasseio());
     }
 
-    // Preenche dados especificos de gato no DTO.
     private void preencherDadosGato(AnimalResponseDTO response, Gato gato) {
         response.setTipo(TipoAnimal.GATO);
         response.setRacaGato(gato.getRaca());

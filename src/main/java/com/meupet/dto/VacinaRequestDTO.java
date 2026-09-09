@@ -13,4 +13,6 @@ public class VacinaRequestDTO {
     private String descricao;
 
     private Long doencaId;
+
+    private Integer periodicidadeMeses;
 }

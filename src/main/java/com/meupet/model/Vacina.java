@@ -35,7 +35,6 @@ public class Vacina {
     @JoinColumn(name = "doenca_id")
     private Doenca doenca;
 
-    public Vacina(int id, String nome, String descricao, Doenca doenca) {
-        this((long) id, nome, descricao, doenca);
-    }
+    @Column(name = "periodicidade_meses")
+    private Integer periodicidadeMeses;
 }

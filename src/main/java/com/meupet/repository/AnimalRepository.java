@@ -7,5 +7,5 @@ import com.meupet.model.Animal;
 
 // Repository generico para a hierarquia de animais.
 @Repository
-public interface AnimalRepository extends JpaRepository<Animal, Integer> {
+public interface AnimalRepository extends JpaRepository<Animal, Long> {
 }

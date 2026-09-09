@@ -21,3 +21,6 @@
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Environment
+.env
