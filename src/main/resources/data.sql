@@ -4,11 +4,11 @@ INSERT INTO tb_doenca (nome, descricao, tratamento) VALUES
 ('Parvovirose', 'Infeccao gastrointestinal', 'Internacao e hidratacao'),
 ('Rinotraqueite', 'Doenca respiratoria felina', 'Antibioticos e suporte');
 
-INSERT INTO tb_vacina (nome, descricao, doenca_id) VALUES
-('Antirrabica', 'Dose anual', 1),
-('V8', 'Protecao contra Cinomose e Parvo', 2),
-('Antirrabica Felina', 'Dose anual', 1),
-('V3', 'Protecao respiratoria', 4);
+INSERT INTO tb_vacina (nome, descricao, doenca_id, periodicidade_meses) VALUES
+('Antirrabica', 'Dose anual', 1, 12),
+('V8', 'Protecao contra Cinomose e Parvo', 2, 12),
+('Antirrabica Felina', 'Dose anual', 1, 12),
+('V3', 'Protecao respiratoria', 4, 6);
 
 INSERT INTO tb_animal (nome, idade, sexo, peso, sujo, castrado) VALUES
 ('Thor', 3, 'MACHO', 12.5, false, true),
@@ -25,3 +25,9 @@ INSERT INTO tb_animal (nome, idade, sexo, peso, sujo, castrado) VALUES
 INSERT INTO tb_gato (id, areia_suja, raca) VALUES
 (3, false, 'Siames'),
 (4, true, 'Persa');
+
+INSERT INTO tb_tarefa (titulo, descricao, categoria, prioridade, data_prevista, concluida, animal_id, vacina_id) VALUES
+('Passear com o Thor', 'Passeio no parque', 'PESSOAL', 'MEDIA', '2026-09-16', false, 1, NULL),
+('Comprar racao do Mingau', NULL, 'PESSOAL', 'ALTA', '2026-09-10', false, 3, NULL),
+('Proxima dose V8 do Thor', 'Dose anual', 'VACINACAO', 'ALTA', '2026-05-10', false, 1, 2),
+('Consulta de rotina da Luna', 'Check-up anual', 'CONSULTA', 'MEDIA', '2026-10-01', false, 4, NULL);

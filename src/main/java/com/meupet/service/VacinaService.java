@@ -28,8 +28,11 @@ public class VacinaService {
     public VacinaResponseDTO criar(VacinaRequestDTO request) throws DadoInvalidoException {
         validarNomeDisponivel(request.getNome(), null);
 
-        Doenca doenca = buscarDoenca(request.getDoencaId());
-        Vacina vacina = new Vacina(null, request.getNome(), request.getDescricao(), doenca);
+        Vacina vacina = new Vacina();
+        vacina.setNome(request.getNome());
+        vacina.setDescricao(request.getDescricao());
+        vacina.setDoenca(buscarDoenca(request.getDoencaId()));
+        vacina.setPeriodicidadeMeses(request.getPeriodicidadeMeses());
 
         return converterParaDTO(repository.save(vacina));
     }
@@ -49,6 +52,7 @@ public class VacinaService {
         vacina.setNome(request.getNome());
         vacina.setDescricao(request.getDescricao());
         vacina.setDoenca(buscarDoenca(request.getDoencaId()));
+        vacina.setPeriodicidadeMeses(request.getPeriodicidadeMeses());
 
         return converterParaDTO(repository.save(vacina));
     }
@@ -83,6 +87,7 @@ public class VacinaService {
         response.setId(vacina.getId());
         response.setNome(vacina.getNome());
         response.setDescricao(vacina.getDescricao());
+        response.setPeriodicidadeMeses(vacina.getPeriodicidadeMeses());
 
         Doenca doenca = vacina.getDoenca();
         if (doenca != null) {

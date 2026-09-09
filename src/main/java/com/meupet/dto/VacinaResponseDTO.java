@@ -10,4 +10,5 @@ public class VacinaResponseDTO {
     private String descricao;
     private Long doencaId;
     private String doencaNome;
+    private Integer periodicidadeMeses;
 }

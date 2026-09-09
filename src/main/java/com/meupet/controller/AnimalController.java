@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import com.meupet.dto.AnimalRequestDTO;
 import com.meupet.dto.AnimalResponseDTO;
+import com.meupet.dto.TarefaResponseDTO;
 import com.meupet.service.AnimalService;
+import com.meupet.service.TarefaService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,9 +23,11 @@ import jakarta.validation.Valid;
 public class AnimalController {
 
     private final AnimalService service;
+    private final TarefaService tarefaService;
 
-    public AnimalController(AnimalService service) {
+    public AnimalController(AnimalService service, TarefaService tarefaService) {
         this.service = service;
+        this.tarefaService = tarefaService;
     }
 
     @PostMapping
@@ -43,6 +47,13 @@ public class AnimalController {
     @Operation(summary = "Buscar animal por id")
     public ResponseEntity<AnimalResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @GetMapping("/{id}/tarefas")
+    @Operation(summary = "Listar tarefas de um animal")
+    public ResponseEntity<Page<TarefaResponseDTO>> listarTarefas(@PathVariable Long id,
+            @PageableDefault(size = 10, sort = "dataPrevista") Pageable pageable) {
+        return ResponseEntity.ok(tarefaService.listarPorAnimal(id, pageable));
     }
 
     @PutMapping("/{id}")
