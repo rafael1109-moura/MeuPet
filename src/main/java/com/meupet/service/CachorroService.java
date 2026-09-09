@@ -10,26 +10,39 @@ import com.meupet.dto.CachorroRequestDTO;
 import com.meupet.dto.CachorroResponseDTO;
 import com.meupet.model.Cachorro;
 import com.meupet.model.DadoInvalidoException;
+import com.meupet.model.Usuario;
 import com.meupet.repository.CachorroRepository;
+import com.meupet.util.SecurityUtil;
 
 @Service
 public class CachorroService {
 
     private final CachorroRepository repository;
+    private final SecurityUtil securityUtil;
 
-    public CachorroService(CachorroRepository repository) {
+    public CachorroService(CachorroRepository repository, SecurityUtil securityUtil) {
         this.repository = repository;
+        this.securityUtil = securityUtil;
+    }
+
+    private Usuario usuarioLogado() {
+        return securityUtil.getUsuarioLogado();
+    }
+
+    private Long usuarioId() {
+        return usuarioLogado().getId();
     }
 
     public CachorroResponseDTO criar(CachorroRequestDTO request) throws DadoInvalidoException {
         Cachorro cachorro = new Cachorro();
         preencher(cachorro, request);
+        cachorro.setUsuario(usuarioLogado());
 
         return toResponse(repository.save(cachorro));
     }
 
     public Page<CachorroResponseDTO> listarTodos(Pageable pageable) {
-        return repository.findAll(pageable).map(this::toResponse);
+        return repository.findAllByUsuarioId(usuarioId(), pageable).map(this::toResponse);
     }
 
     public CachorroResponseDTO buscarPorId(Long id) {
@@ -48,7 +61,7 @@ public class CachorroService {
     }
 
     private Cachorro buscarCachorro(Long id) {
-        return repository.findById(id)
+        return repository.findByIdAndUsuarioId(id, usuarioId())
                 .orElseThrow(() -> new NoSuchElementException("Cachorro com id " + id + " não encontrado."));
     }
 

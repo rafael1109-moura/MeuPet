@@ -7,13 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MeupetApplication {
 
 	public static void main(String[] args) {
-		// Pra quando a gnt precisar usar a .env (por causa do hash da criptografia da senha)
-		// Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
-        
-        // dotenv.entries().forEach(entry -> 
-        //     System.setProperty(entry.getKey(), entry.getValue())
-        // );
-
 		SpringApplication.run(MeupetApplication.class, args);
 	}
 

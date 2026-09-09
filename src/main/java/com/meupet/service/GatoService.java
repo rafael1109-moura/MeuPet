@@ -9,26 +9,39 @@ import org.springframework.stereotype.Service;
 import com.meupet.dto.GatoRequestDTO;
 import com.meupet.dto.GatoResponseDTO;
 import com.meupet.model.Gato;
+import com.meupet.model.Usuario;
 import com.meupet.repository.GatoRepository;
+import com.meupet.util.SecurityUtil;
 
 @Service
 public class GatoService {
 
     private final GatoRepository repository;
+    private final SecurityUtil securityUtil;
 
-    public GatoService(GatoRepository repository) {
+    public GatoService(GatoRepository repository, SecurityUtil securityUtil) {
         this.repository = repository;
+        this.securityUtil = securityUtil;
+    }
+
+    private Usuario usuarioLogado() {
+        return securityUtil.getUsuarioLogado();
+    }
+
+    private Long usuarioId() {
+        return usuarioLogado().getId();
     }
 
     public GatoResponseDTO criar(GatoRequestDTO request) {
         Gato gato = new Gato();
         preencher(gato, request);
+        gato.setUsuario(usuarioLogado());
 
         return toResponse(repository.save(gato));
     }
 
     public Page<GatoResponseDTO> listarTodos(Pageable pageable) {
-        return repository.findAll(pageable).map(this::toResponse);
+        return repository.findAllByUsuarioId(usuarioId(), pageable).map(this::toResponse);
     }
 
     public GatoResponseDTO buscarPorId(Long id) {
@@ -47,7 +60,7 @@ public class GatoService {
     }
 
     private Gato buscarGato(Long id) {
-        return repository.findById(id)
+        return repository.findByIdAndUsuarioId(id, usuarioId())
                 .orElseThrow(() -> new NoSuchElementException("Gato com id " + id + " não encontrado."));
     }
 

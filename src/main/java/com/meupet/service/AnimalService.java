@@ -12,25 +12,38 @@ import com.meupet.dto.AnimalResponseDTO;
 import com.meupet.model.Animal;
 import com.meupet.model.Cachorro;
 import com.meupet.model.Gato;
+import com.meupet.model.Usuario;
 import com.meupet.repository.AnimalRepository;
+import com.meupet.util.SecurityUtil;
 
 @Service
 public class AnimalService {
 
     private final AnimalRepository repository;
+    private final SecurityUtil securityUtil;
 
-    public AnimalService(AnimalRepository repository) {
+    public AnimalService(AnimalRepository repository, SecurityUtil securityUtil) {
         this.repository = repository;
+        this.securityUtil = securityUtil;
+    }
+
+    private Usuario usuarioLogado() {
+        return securityUtil.getUsuarioLogado();
+    }
+
+    private Long usuarioId() {
+        return usuarioLogado().getId();
     }
 
     public AnimalResponseDTO criar(AnimalRequestDTO request) {
         Animal animal = toEntity(request);
+        animal.setUsuario(usuarioLogado());
         Animal salvo = repository.save(animal);
         return toResponse(salvo);
     }
 
     public Page<AnimalResponseDTO> listarTodos(Pageable pageable) {
-        return repository.findAll(pageable).map(this::toResponse);
+        return repository.findAllByUsuarioId(usuarioId(), pageable).map(this::toResponse);
     }
 
     public AnimalResponseDTO buscarPorId(Long id) {
@@ -63,7 +76,7 @@ public class AnimalService {
     }
 
     private Animal buscarAnimal(Long id) {
-        return repository.findById(id)
+        return repository.findByIdAndUsuarioId(id, usuarioId())
                 .orElseThrow(() -> new NoSuchElementException("Animal com id " + id + " não encontrado."));
     }
 

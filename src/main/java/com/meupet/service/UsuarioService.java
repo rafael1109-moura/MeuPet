@@ -37,6 +37,19 @@ public class UsuarioService {
         return converterParaDTO(repository.save(usuario));
     }
 
+    public Usuario criarEntidade(UsuarioRequestDTO request) throws DadoInvalidoException {
+        if (repository.findByEmail(request.getEmail()).isPresent()) {
+            throw new DadoInvalidoException("O usuário '" + request.getEmail() + "' já está cadastrado.");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNome(request.getNome());
+        usuario.setEmail(request.getEmail());
+        usuario.setSenha(passwordEncoder.encode(request.getSenha()));
+
+        return repository.save(usuario);
+    }
+
     public Page<UsuarioResponseDTO> listarTodas(Pageable pageable) {
         return repository.findAll(pageable).map(this::converterParaDTO);
     }
