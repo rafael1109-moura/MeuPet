@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: meupet
+    runtime: image
+    image:
+      url: https://github.com/rafael1109-moura/MeuPet
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: MEUPET_SECRET_KEY
+        generateValue: true
+      - key: MEUPET_SALT
+        generateValue: true
+      - key: DB_URL
+        fromDatabase:
+          name: meupet-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: meupet-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: meupet-db
+          property: password
+
+databases:
+  - name: meupet-db
+    plan: free
+    databaseName: meupet
