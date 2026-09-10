@@ -4,14 +4,15 @@ import com.meupet.dto.TarefaRequestDTO;
 import com.meupet.dto.TarefaResponseDTO;
 import com.meupet.dto.TarefaResumoDTO;
 import com.meupet.model.Animal;
-import com.meupet.model.DadoInvalidoException;
 import com.meupet.model.Tarefa;
 import com.meupet.model.Tarefa.Categoria;
 import com.meupet.model.Tarefa.Prioridade;
+import com.meupet.model.Usuario;
 import com.meupet.model.Vacina;
 import com.meupet.repository.AnimalRepository;
 import com.meupet.repository.TarefaRepository;
 import com.meupet.repository.VacinaRepository;
+import com.meupet.util.SecurityUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,25 +26,36 @@ public class TarefaService {
     private final TarefaRepository repository;
     private final AnimalRepository animalRepository;
     private final VacinaRepository vacinaRepository;
+    private final SecurityUtil securityUtil;
 
     public TarefaService(TarefaRepository repository, AnimalRepository animalRepository,
-                         VacinaRepository vacinaRepository) {
+                         VacinaRepository vacinaRepository, SecurityUtil securityUtil) {
         this.repository = repository;
         this.animalRepository = animalRepository;
         this.vacinaRepository = vacinaRepository;
+        this.securityUtil = securityUtil;
+    }
+
+    private Usuario usuarioLogado() {
+        return securityUtil.getUsuarioLogado();
+    }
+
+    private Long usuarioId() {
+        return usuarioLogado().getId();
     }
 
     public TarefaResponseDTO criar(TarefaRequestDTO request) {
         Tarefa tarefa = new Tarefa();
         preencher(tarefa, request);
         tarefa.setConcluida(false);
+        tarefa.setUsuario(usuarioLogado());
 
         return converterParaDTO(repository.save(tarefa));
     }
 
     public Page<TarefaResponseDTO> listar(Long animalId, Categoria categoria, Boolean concluida,
                                           Boolean apenasAtrasadas, Pageable pageable) {
-        return repository.buscarFiltradas(animalId, categoria, concluida, apenasAtrasadas,
+        return repository.buscarFiltradas(usuarioId(), animalId, categoria, concluida, apenasAtrasadas,
                         LocalDate.now(), pageable)
                 .map(this::converterParaDTO);
     }
@@ -85,22 +97,32 @@ public class TarefaService {
 
     public TarefaResumoDTO resumo(Long animalId) {
         LocalDate hoje = LocalDate.now();
+        Long usuarioId = usuarioId();
         if (animalId != null) {
-            animalRepository.findById(animalId)
+            animalRepository.findByIdAndUsuarioId(animalId, usuarioId)
                     .orElseThrow(() -> new NoSuchElementException("Animal com id " + animalId + " não encontrado."));
         }
 
-        long total = repository.buscarFiltradas(animalId, null, null, null, hoje, Pageable.unpaged()).getTotalElements();
-        long pendentes = repository.countByConcluidaFalse();
-        long atrasadas = repository.countByConcluidaFalseAndDataPrevistaBefore(hoje);
-        long concluidas = repository.countByConcluidaTrue();
-        long proximas = repository.countByConcluidaFalseAndDataPrevistaGreaterThanEqual(hoje);
+        long total = repository.buscarFiltradas(usuarioId, animalId, null, null, null, hoje, Pageable.unpaged())
+                .getTotalElements();
+        long pendentes = animalId != null
+                ? repository.countByConcluidaFalseAndAnimalIdAndUsuarioId(animalId, usuarioId)
+                : repository.countByConcluidaFalseAndUsuarioId(usuarioId);
+        long atrasadas = animalId != null
+                ? repository.countByConcluidaFalseAndDataPrevistaBeforeAndAnimalIdAndUsuarioId(hoje, animalId, usuarioId)
+                : repository.countByConcluidaFalseAndDataPrevistaBeforeAndUsuarioId(hoje, usuarioId);
+        long concluidas = animalId != null
+                ? repository.countByConcluidaTrueAndAnimalIdAndUsuarioId(animalId, usuarioId)
+                : repository.countByConcluidaTrueAndUsuarioId(usuarioId);
+        long proximas = animalId != null
+                ? repository.countByConcluidaFalseAndDataPrevistaGreaterThanEqualAndAnimalIdAndUsuarioId(hoje, animalId, usuarioId)
+                : repository.countByConcluidaFalseAndDataPrevistaGreaterThanEqualAndUsuarioId(hoje, usuarioId);
 
         return new TarefaResumoDTO(total, pendentes, atrasadas, concluidas, proximas);
     }
 
     private Tarefa buscarTarefa(Long id) {
-        return repository.findById(id)
+        return repository.findByIdAndUsuarioId(id, usuarioId())
                 .orElseThrow(() -> new NoSuchElementException("Tarefa com id " + id + " não encontrada."));
     }
 
@@ -118,7 +140,7 @@ public class TarefaService {
         if (animalId == null) {
             return null;
         }
-        return animalRepository.findById(animalId)
+        return animalRepository.findByIdAndUsuarioId(animalId, usuarioId())
                 .orElseThrow(() -> new NoSuchElementException("Animal com id " + animalId + " não encontrado."));
     }
 

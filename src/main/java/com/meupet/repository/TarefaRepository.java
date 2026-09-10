@@ -10,29 +10,42 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query("""
            select t from Tarefa t
-           where (:animalId is null or t.animal.id = :animalId)
+           where t.usuario.id = :usuarioId
+             and (:animalId is null or t.animal.id = :animalId)
              and (:categoria is null or t.categoria = :categoria)
              and (:concluida is null or t.concluida = :concluida)
              and (:apenasAtrasadas is null or (t.dataPrevista < :hoje and t.concluida = false))
            """)
-    Page<Tarefa> buscarFiltradas(@Param("animalId") Long animalId,
+    Page<Tarefa> buscarFiltradas(@Param("usuarioId") Long usuarioId,
+                                 @Param("animalId") Long animalId,
                                  @Param("categoria") Categoria categoria,
                                  @Param("concluida") Boolean concluida,
                                  @Param("apenasAtrasadas") Boolean apenasAtrasadas,
                                  @Param("hoje") LocalDate hoje,
                                  Pageable pageable);
 
-    long countByConcluidaFalseAndDataPrevistaBefore(LocalDate data);
+    Optional<Tarefa> findByIdAndUsuarioId(Long id, Long usuarioId);
 
-    long countByConcluidaFalse();
+    long countByConcluidaFalseAndAnimalIdAndUsuarioId(Long animalId, Long usuarioId);
 
-    long countByConcluidaTrue();
+    long countByConcluidaFalseAndDataPrevistaBeforeAndAnimalIdAndUsuarioId(LocalDate data, Long animalId, Long usuarioId);
 
-    long countByConcluidaFalseAndDataPrevistaGreaterThanEqual(LocalDate data);
+    long countByConcluidaTrueAndAnimalIdAndUsuarioId(Long animalId, Long usuarioId);
+
+    long countByConcluidaFalseAndDataPrevistaGreaterThanEqualAndAnimalIdAndUsuarioId(LocalDate data, Long animalId, Long usuarioId);
+
+    long countByConcluidaFalseAndUsuarioId(Long usuarioId);
+
+    long countByConcluidaFalseAndDataPrevistaBeforeAndUsuarioId(LocalDate data, Long usuarioId);
+
+    long countByConcluidaTrueAndUsuarioId(Long usuarioId);
+
+    long countByConcluidaFalseAndDataPrevistaGreaterThanEqualAndUsuarioId(LocalDate data, Long usuarioId);
 }
